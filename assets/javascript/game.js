@@ -13,6 +13,7 @@ var loses = 0;
 var letters = /[\w]/img;
 var time = 3000;
 var restarting = false;
+var img = document.getElementById('hangImg');
 console.log(word);
 
 for (var i = 0; i < word.length; i++) {
@@ -22,14 +23,46 @@ for (var i = 0; i < word.length; i++) {
     main.append(x);
 }
 
+img.src = 'assets/images/hang0.png';
+
+document.addEventListener('keyup', function() {
+    if(score === 9) {
+        img.src = 'assets/images/hang1.png';
+    }
+    if(score === 8) {
+        img.src = 'assets/images/hang2.png';
+    }
+    if(score === 7) {
+        img.src = 'assets/images/hang3.png';
+    }
+    if(score === 6) {
+        img.src = 'assets/images/hang4.png';
+    }
+    if(score === 5) {
+        img.src = 'assets/images/hang5.png';
+    }
+    if(score === 4) {
+        img.src = 'assets/images/hang6.png';
+    }
+    if(score === 3) {
+        img.src = 'assets/images/hang7.png';
+    }
+    if(score === 2) {
+        img.src = 'assets/images/hang8.png';
+    }
+    if(score === 1) {
+        img.src = 'assets/images/hang9.png';
+    }
+    if(score === 0) {
+        img.src = 'assets/images/hang10.png';
+    }
+});
+
 
 document.addEventListener('keydown', function (e) {
     if(startTemp === 0) {
         document.getElementById('game').style.display = 'block';
         document.getElementById('pregame').style.display = 'none';
-    }
-    for(let i = 0; i < score; i++) {
-        document.getElementById('hangImg').src = 'assets/images/hang' + i + '.png';
     }
     startTemp += 1;
     if(startTemp > 1) {
@@ -105,6 +138,7 @@ function newLose() {
 }
 
 function tempWrite() {
+    img.src = 'assets/images/hang0.png';
     rand = Math.floor(Math.random() * words.length);
     word = words[rand];
     restarting = false;
