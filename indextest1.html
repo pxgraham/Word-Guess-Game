@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .word {
+            letter-spacing: 10px;
+            font-size: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div align="center">
+        <p id="word" class="word"></p>
+        <span>Guesses Left</span>
+        <span id="guessesLeft">10</span>
+        <br>
+        <span>Letters Used: </span>
+        <span id="lettersUsed"></span>
+    </div>
+
+
+    <script>
+        var lettersUsed = [];
+        var words = ['hello'];
+        var rand = Math.floor(Math.random() * words.length);
+        var randWord = words[rand];
+        randWord = randWord.toUpperCase();
+        var theWord = document.getElementById('word');
+        var remaining = document.getElementById('guessesLeft');
+        var used = document.getElementById('lettersUsed');
+        var gRight = false;
+        var gWrong = false;
+        var gLeft = 10;
+        var key = '';
+        var comma = /(,)/img;
+
+        for (var i = 0; i < randWord.length; i++) {
+            theWord.innerText += '-';
+        }
+
+        document.addEventListener('keyup', guess);
+
+        function guess(e) {
+            key = e.key.toUpperCase();
+            logUsed();
+            if(randWord.indexOf(key) > -1) {
+                right();
+            } else {
+                wrong();
+            }        
+        }
+        function right() {
+            //input the letter the user entered into theWord string
+            var x = theWord.innerHTML.split('');
+            for(var i = 0; i < randWord.length; i++) {
+                if(key === randWord[i]) {
+                    x[i] = key;
+                    x = x.toString();
+                    x = x.replace(comma, '');
+                    console.log(x);
+                    theWord.innerHTML = x;
+                }
+            }
+        }
+        function wrong() {
+            remaining.innerText = --gLeft;
+            console.log('wrong');
+        }
+
+        function logUsed() {
+            lettersUsed.push(key);
+            used.innerText = '';
+            for(var i = 0; i < lettersUsed.length; i++) {
+                var index = lettersUsed.indexOf(key)
+                if(index !== 0) {
+                   delete lettersUsed[i];
+                }
+                used.innerText += lettersUsed[i];
+            }
+
+            console.log(lettersUsed);
+        }
+
+    </script>
+</body>
+
+</html>

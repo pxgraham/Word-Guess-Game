@@ -1,0 +1,95 @@
+body {
+    font-family: Roboto, Arial;
+}
+.container {
+    width: 980px;
+    margin: auto;
+    position: relative;
+    border: 0px solid black;
+    height: 600px;
+}
+
+.nav {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100px;
+    border: 1px solid black;
+}
+
+.strokeText {
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;  
+}
+.strokeText1 {
+    color: red;
+    font-size: 30px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;  
+}
+
+.navone {
+    font-size: 50px;
+    text-align: left;
+    display: inline-block;
+    position: absolute;
+    width: 33%;
+    height: 100%;
+    left: 0px;
+    top: 0px; 
+    padding-left: 20px;
+    padding-top: 20px;                         
+    }
+
+.navtwo {
+    font-size: 40px;
+    text-align: right;
+    display: inline-block;
+    position: absolute;
+    padding-right: 10px;
+    width: 33%;
+    height: 100%;
+    right: 0px;
+    top: 0px;
+}
+
+.navthree {
+    width: 33%;
+}
+
+.main {
+    text-align: center;
+    font-size: 50px;
+    letter-spacing: 20px;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    margin: auto;
+}
+
+.bottom {
+    text-align: center;
+}
+
+.pregame {
+    padding-top: 20%;
+    display: block;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    font-size: 70px;
+}
+
+.game {
+    display: none;
+}
+
+.anim {
+    position: absolute;
+    width: 33%;
+    margin-left: 33%;
+    height: 200px;
+    border: 1px solid black;;
+}

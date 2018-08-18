@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hangman</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style type="text/css">
+        body {
+            font-family: Roboto;
+            width: 960px;
+            margin: auto;
+        }
+
+        .head {
+            font-size: 40px;
+            text-align: center;
+        }
+
+        .container {
+            border: 1px solid black;
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+
+        canvas {
+            border: 1px solid black;
+            width: 50%;
+            height: 250px;
+        }
+
+        .infoblock {
+            display: inline-block;
+            width: 50%;
+            height: 250px;
+            border: 1px solid black;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+        }
+
+        .infoitem {
+            width: 50%;
+            margin: auto;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .wordContainer {
+            width: 100%;
+            height: 50%;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            border: 1px solid red;
+        }
+
+        .wordItem {
+            width: 100%;
+            margin: auto;
+            text-align: center;
+            letter-spacing: 12px;
+            font-size: 30px;
+        }
+
+        .buttons {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background: linear-gradient(to right, rgb(31, 162, 255), rgb(18, 216, 250), rgb(166, 255, 203));
+            ;
+        }
+
+        input {
+            border: 1px solid linear-gradient(to right, rgb(31, 162, 255), rgb(18, 216, 250), rgb(166, 255, 203));
+            margin: -1px;
+            padding-left: 2px;
+            padding-right: 2px;
+            width: 3.65%;
+            text-align: center;
+            background: linear-gradient(to right, rgb(31, 162, 255), rgb(18, 216, 250), rgb(166, 255, 203));
+            text-shadow: 2px 2px 4px blue;
+            font-weight: bolder;
+            box-shadow: 2px 2px 4px white;
+        }
+
+        #main {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="start">
+        <div class="head">
+            FedEx
+            <p>Press any key</p>
+        </div>
+    </div>
+    <div id="main">
+        <div class="head">FedEx
+        </div>
+        <div class="container">
+            <canvas id="canvas">Your browser does not support canvas</canvas>
+            <div class="infoblock">
+                <div class="infoitem">
+                    Guesses Left
+                    <p id="guessesRem" class="infoitem">6</p>
+                </div>
+            </div>
+            <div class="wordContainer">
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="wordItem" id="word"></div>
+                <div class="buttons" id="buttonContainer">
+                    <input type="button" value="A" clicked="false" id="btn0">
+                    <input type="button" value="B" clicked="false" id="btn1">
+                    <input type="button" value="C" clicked="false" id="btn2">
+                    <input type="button" value="D" clicked="false" id="btn3">
+                    <input type="button" value="E" clicked="false" id="btn4">
+                    <input type="button" value="F" clicked="false" id="btn5">
+                    <input type="button" value="G" clicked="false" id="btn6">
+                    <input type="button" value="H" clicked="false" id="btn7">
+                    <input type="button" value="I" clicked="false" id="btn8">
+                    <input type="button" value="J" clicked="false" id="btn9">
+                    <input type="button" value="K" clicked="false" id="btn10">
+                    <input type="button" value="L" clicked="false" id="btn11">
+                    <input type="button" value="M" clicked="false" id="btn12">
+                    <input type="button" value="N" clicked="false" id="btn13">
+                    <input type="button" value="O" clicked="false" id="btn14">
+                    <input type="button" value="P" clicked="false" id="btn15">
+                    <input type="button" value="Q" clicked="false" id="btn16">
+                    <input type="button" value="R" clicked="false" id="btn17">
+                    <input type="button" value="S" clicked="false" id="btn18">
+                    <input type="button" value="T" clicked="false" id="btn19">
+                    <input type="button" value="U" clicked="false" id="btn20">
+                    <input type="button" value="V" clicked="false" id="btn21">
+                    <input type="button" value="W" clicked="false" id="btn22">
+                    <input type="button" value="X" clicked="false" id="btn23">
+                    <input type="button" value="Y" clicked="false" id="btn24">
+                    <input type="button" value="Z" clicked="false" id="btn25">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        var pageIsUp = false;
+
+        var guess = ['Meowmix', 'Fluffy', 'Abracadabra', 'Coding', 'Laughing', 'Cow', 'Lemon', 'Rhinoceros', 'Girraffe', 'Computer', 'Congregation'];
+        /* var guess = ['aaaaabba']; */
+        //ARRAY FOR WORDS RANDOMNLY SELECTED
+        var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        //USED SO ONLY A-Z COUNT TOWARDS GUESSES
+        var answerLetters = [];
+        //STORED ARRAY FOR EACH CHARACTER IN THE WORD
+        var pick = '';
+        //STORED VARIABLE FOR THE WORD
+        var count = -1;
+        //USED SO FIRSTKEYPRESS ON TITLE PAGE DOESNT COUNT AS GUESS
+        var letterCount = 0;
+        //STORED VARIABLE FOR THE NUMBER OF CHARACTERS IN THE WORD
+        var guessesLeft = 6;
+        var guessedWrong;
+        var guessedCorrect;
+        var pastGuessVal = '';
+        var key = '';
+        var used = ['temp'];
+        var scoreTarget = 0;
+        var counta = -1;
+
+        document.addEventListener('keyup', function (event) {
+            //KEYUP FUNCTION ON WHOLE DOCUMENT
+            var currentWord = document.getElementById('word').textContent;
+            //STORES WHAT WORD IS SELECTED 
+            key = event.key.toUpperCase();
+            //CAPTURES USER KEYPRESS AS UPPERCASE                 
+
+            if (!pageIsUp) {
+                document.getElementById('main').style.display = 'block';
+                //SHOW MAIN PAGE AND HIDES TITLE PAGE  
+                document.getElementById('start').style.display = 'none';
+                pickRand();
+                //SELECTS RANDOM WORD, MAKES UNDERSCORES FOR THE AMOUNT OF CHARACTERS THE WORD HAS, WITH THEIR OWN ID'S
+                pageIsUp = true;
+            }
+            if (pageIsUp) {
+                if(guessesLeft <= 1) {                    
+                    console.log('you lose!');
+                    alert('You Lose! Click Okay to Try Again!');
+                    location=location;
+                }
+                count += 1;
+                //GAME WILL USE A GUESS ON 'TITLE' PAGE WITHOUT THIS
+                if (count >= 1) {
+                    for(var q = 0; q < answerLetters.length; q++) {
+                        if(key !== answerLetters[q]) {
+                            guessedWrong = true;
+                        } else if(key === answerLetters[q]) {
+                            guessedCorrect = true;
+                        }
+                        if(document.getElementById('letter' + q).textContent !== '_') {
+                            document.getElementById('guessesRem').textContent = 'you win! press any key to try again';
+                            console.log('you win yay. pres any key to continue');
+                            counta += answerLetters.length;
+                            if(counta > answerLetters.length * answerLetters.length) {
+                                location=location
+                            }
+                        }
+                    }                    
+                    if(guessedWrong) {
+                        guessesLeft -= 1;
+                        document.getElementById('guessesRem').innerText = guessesLeft;
+                        guessedWrong = false;
+                    } 
+                    if(guessedCorrect) {
+                        guessesLeft += 1;
+                        document.getElementById('guessesRem').innerText = guessesLeft;
+                        guessedCorrect = false;
+                    }                  
+                    for (var i = 0; i < letters.length; i++) {                        
+                        //CAN ONLY GUESS LETTERS
+                        if (key === letters[i]) {
+                            var btn = document.getElementById('btn' + i);
+                            btn.disabled = true;
+                            btn.style.background = "linear-gradient(to right, rgb(255, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0))";
+                            btn.style.color = "white";
+                            btn.clicked = true;
+                            for (var j = 0; j < answerLetters.length; j++) {
+                                if (key === answerLetters[j]) {
+                                    //IF KEY PUSHED IS ONE IN THE ANSWER WORD        
+                                    document.getElementById('letter' + j).textContent = key;
+                                    //GETS THE CREATED ELEMENTS AND MAKES THEM THE KEY PRESS IF THEY ARE EQUAL TO THE KEYPRESS
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        function pickRand() {
+            var rand = Math.floor(Math.random() * guess.length);
+            pick = guess[rand];
+            answerLetters = pick.split("");
+            scoreTarget = answerLetters.length;
+            for (var i = 0; i < answerLetters.length; i++) {
+                answerLetters[i] = answerLetters[i].toUpperCase();
+            }
+
+            if (!pageIsUp) {
+                for (var i1 = 0; i1 < pick.length; i1++) {
+                    var item = document.createElement('span');
+                    item.id = 'letter' + i1;
+                    item.textContent = '_';
+                    document.getElementById('word').appendChild(item);
+                    letterCount += i1;
+                }
+            }
+        }        
+
+    </script>
+</body>
+
+</html>
